@@ -23,7 +23,7 @@ struct AccountView: View {
     ]
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             // プロフィールヘッダー
             ZStack {
                 // 背景画像
@@ -64,29 +64,67 @@ struct AccountView: View {
                 .padding(.top, 80)
             }
             .frame(height: 240)
-
-            VStack {
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading) {
-                        Text("History")
-                            .font(.largeTitle)
-                            .bold()
-                            .padding(.horizontal)
-                        Text("最近話した友達")
-                            .font(.callout)
-                            .padding(.horizontal)
-                    }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("はじめまして！ プロフィールを見てくれてありがとうございます！こういうアプリを使うのは初めてですが、良い出会いがあればと思って登録しました！！  同じように食べることが好きな人と出会えたら嬉しいです。 よろしくお願いします！！笑笑")
+                    .font(Font.caption)
+            }
+            .padding(.horizontal, 32)
+            .padding(.top, 24)
+            
+            HStack {
+                Button(action: {
                     
-                    ScrollView {
-                        ForEach(callHistory) { history in
-                            CallHistoryCell(history: history)
-                                .shadow(radius: 3)
-                                .padding(8)
-                        }
-                    }
-                    .padding(.top, 10)
+                }) {
+                    Text("Edit profile")
+                        .foregroundStyle(.white)
+                        .font(.callout)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 6)
+                        .background(.gray)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 8)
+                        )
+                }
+                Button(action: {
+                    
+                }) {
+                    Text("Share profile")
+                        .foregroundStyle(.white)
+                        .font(.callout)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 6)
+                        .background(.gray)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 8)
+                        )
                 }
             }
+            .padding(.horizontal, 32)
+            .padding(.vertical, 8)
+            
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading) {
+                    Text("History")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.horizontal)
+                    Text("最近話した友達")
+                        .font(.callout)
+                        .padding(.horizontal)
+                }
+                
+                ScrollView {
+                    ForEach(callHistory) { history in
+                        CallHistoryCell(history: history)
+                            .shadow(radius: 3)
+                            .padding(8)
+                    }
+                }
+            }
+            .padding(.horizontal, 16)
         }
         .ignoresSafeArea(edges: .top)
     }
@@ -151,3 +189,4 @@ extension AccountView {
 #Preview {
     AccountView()
 }
+
