@@ -28,7 +28,6 @@ struct DiscoverView: View {
     
     var body: some View {
         ZStack {
-            // 背景のアニメーションシェイプ
             ForEach(shapes) { shape in
                 Circle()
                     .fill(shape.color.opacity(shape.opacity))
@@ -39,8 +38,10 @@ struct DiscoverView: View {
             }
             
             VStack {
-                Text("DISCOVER")
+                Text("Wadaily")
                     .font(Font.largeTitle.bold())
+                Text("話し相手をみつけよう")
+                    .font(.callout)
                 
                 ScrollView {
                     ForEach(partners) { partner in
@@ -58,7 +59,6 @@ struct DiscoverView: View {
     }
     
     private func startAnimation() {
-        // 初期シェイプを生成
         shapes = (0..<5).map { _ in
             AnimatedShape(
                 offset: randomOffset(),
@@ -67,8 +67,7 @@ struct DiscoverView: View {
                 color: [Color.blue, Color.purple, Color.pink, Color.orange].randomElement()!
             )
         }
-        
-        // アニメーションループ
+
         Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             withAnimation(.easeInOut(duration: 3)) {
                 for i in 0..<shapes.count {
