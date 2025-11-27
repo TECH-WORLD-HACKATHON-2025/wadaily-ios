@@ -7,7 +7,17 @@
 
 import SwiftUI
 
+struct AnimatedShape: Identifiable {
+    let id = UUID()
+    var offset: CGSize
+    var scale: CGFloat
+    var opacity: Double
+    var color: Color
+}
+
 struct DiscoverView: View {
+    @State private var shapes: [AnimatedShape] = []
+    
     // サンプルデータ
     let partners = [
         CallPartner(name: "うらっしゅ", imageUrl: nil, backgroundImageUrl: nil, status: "online", topics: []),
@@ -17,19 +27,63 @@ struct DiscoverView: View {
     ]
     
     var body: some View {
-        VStack {
-            Text("DISCOVER")
-                .font(Font.largeTitle.bold())
+        ZStack {
+            // 背景のアニメーションシェイプ
+            ForEach(shapes) { shape in
+                Circle()
+                    .fill(shape.color.opacity(shape.opacity))
+                    .frame(width: 150, height: 150)
+                    .scaleEffect(shape.scale)
+                    .offset(shape.offset)
+                    .blur(radius: 20)
+            }
             
-            ScrollView {
-                ForEach(partners) { partner in
-                    CallPartnerCell(partner: partner)
-                        .shadow(radius: 5)
-                        .padding(8)
+            VStack {
+                Text("DISCOVER")
+                    .font(Font.largeTitle.bold())
+                
+                ScrollView {
+                    ForEach(partners) { partner in
+                        CallPartnerCell(partner: partner)
+                            .shadow(radius: 5)
+                            .padding(8)
+                    }
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            startAnimation()
+        }
+    }
+    
+    private func startAnimation() {
+        // 初期シェイプを生成
+        shapes = (0..<5).map { _ in
+            AnimatedShape(
+                offset: randomOffset(),
+                scale: Double.random(in: 0.5...3.0),
+                opacity: Double.random(in: 0.1...0.2),
+                color: [Color.blue, Color.purple, Color.pink, Color.orange].randomElement()!
+            )
+        }
+        
+        // アニメーションループ
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            withAnimation(.easeInOut(duration: 3)) {
+                for i in 0..<shapes.count {
+                    shapes[i].offset = randomOffset()
+                    shapes[i].scale = Double.random(in: 0.5...3.0)
                 }
             }
         }
-        .padding()
+    }
+    
+    private func randomOffset() -> CGSize {
+        CGSize(
+            width: CGFloat.random(in: -300...300),
+            height: CGFloat.random(in: -400...400)
+        )
     }
 }
 
@@ -76,6 +130,8 @@ extension DiscoverView {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(partner.name)
                         .font(.title2)
+                        .bold()
+
                     Text(partner.status)
                         .font(.headline)
                         .foregroundColor(partner.isOnline ? .green : .gray)
@@ -99,10 +155,10 @@ extension DiscoverView {
             .padding(16)
         }
         .overlay(
-            RoundedRectangle(cornerRadius: 36)
+            RoundedRectangle(cornerRadius: 38)
                 .stroke(Color.white, lineWidth: 10)
         )
-        .cornerRadius(36)
+        .cornerRadius(38)
         
     }
 }
