@@ -19,4 +19,3 @@ struct CallPartner: Identifiable {
         status == "online"
     }
 }
-
