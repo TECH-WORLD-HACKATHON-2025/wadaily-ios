@@ -4,5 +4,7 @@
 <dict>
 	<key>AgoraAppId</key>
 	<string>42b8ca513e0a4a5296790ad6ab8c2629</string>
+	<key>WadailyAPI</key>
+	<string>https://wadaily-backend-1011560404154.asia-northeast1.run.app</string>
 </dict>
 </plist>
